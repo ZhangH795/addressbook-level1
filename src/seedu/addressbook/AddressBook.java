@@ -206,6 +206,7 @@ public class AddressBook {
 
     public static void main(String[] args) {
         showWelcomeMessage();
+        //showResultToUser(getUsageInfoForAllCommands());
         processProgramArgs(args);
         loadDataFromStorage();
         while (true) {
@@ -482,9 +483,12 @@ public class AddressBook {
      */
     private static ArrayList<HashMap<String,String>> getPersonsWithNameContainingAnyKeyword(Collection<String> keywords) {
         final ArrayList<HashMap<String,String>> matchedPersons = new ArrayList<>();
+        Set<String> lowerCaseKeywords = new HashSet<>();
+        for(String key : keywords)
+            lowerCaseKeywords.add(key.toLowerCase());
         for (HashMap<String,String> person : getAllPersonsInAddressBook()) {
-            final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));
-            if (!Collections.disjoint(wordsInName, keywords)) {
+            final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person).toLowerCase()));
+            if (!Collections.disjoint(wordsInName, lowerCaseKeywords)) {
                 matchedPersons.add(person);
             }
         }
